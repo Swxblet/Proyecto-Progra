@@ -4,6 +4,11 @@ using namespace std;
 //Definicion de variables
 int monto, plazo, intereses;
 
+//Definicion de funciones
+double calcularPrestamo(int monto, int plazo, int intereses) {
+
+}
+
 //Funcion principal
 int main()
 {
@@ -34,7 +39,7 @@ int main()
                 cout << "El monto del prestamo no puede ser negativo o igual a 0" << endl;
             }
         }
-        while (monto > 0);
+        while (monto <= 0);
         do
         {
             cout << "Ingrese el plazo del prestamo en meses, el maximo es 360 meses" << endl;
