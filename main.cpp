@@ -3,10 +3,6 @@
 #include <cmath>
 using namespace std;
 
-//Declaración de funciones
-void callFunction(int selection);
-int showMenu();
-
 //Definición de struct
 struct loanStructure
 {
@@ -17,12 +13,34 @@ struct loanStructure
     double cuotaTotal;
 };
 
+//Declaración de funciones
+int showMenu();
+void callFunction(int selection, loanStructure &loan);
+void createLoan(loanStructure &loan);
+void addTax(loanStructure &tax);
+void addDate(loanStructure &date);
+int editLoan();
+void switchLoan(int selection);
+void changeLoan(loanStructure &loan);
+void changeTax(loanStructure &tax);
+void changeDate(loanStructure &date);
+void calculateLoan(loanStructure &mensualPayment, loanStructure &maxPayment, const loanStructure &tax, const loanStructure &loan, const loanStructure &date);
+int deleteLoan();
+void switchDelete(int selection, loanStructure &loan, loanStructure &tax, loanStructure &date);
+
 //Funcion principal
 int main()
 {
     //Se utiliza setlocale para importar la configuración de la computadora, así se utilizan tildes y ñ
     setlocale(LC_ALL, "spanish");
-
+    loanStructure loan{};
+    int option;
+    do
+    {
+        option = showMenu();
+        callFunction(option, loan);
+    }while (option != 5);
+    return 0;
 }
 
 int showMenu()
@@ -34,7 +52,7 @@ int showMenu()
         cout << "2. Editar préstamo" << endl;
         cout << "3. Calcular préstamo" << endl;
         cout << "4. Eliminar préstamo" << endl;
-        cout << "5. Salir";
+        cout << "5. Salir" << endl;
         cin >> selection;
         if (selection < 1 || selection > 5)
         {
@@ -44,19 +62,24 @@ int showMenu()
     return selection;
 }
 
-void callFunction(int selection)
+void callFunction(int selection, loanStructure &loan)
 {
     switch (selection)
     {
         case 1:
-        cout << "crear prestamo" << endl;
+        createLoan(loan);
+        addTax(loan);
+        addDate(loan);
         break;
         case 2:
-        cout << "editar prestamo" << endl;
+        switchLoan(editLoan());
+        break;
         case 3:
-        cout << "mostrar prestamo" << endl;
+        calculateLoan(loan, loan, loan, loan, loan);
+        break;
         case 4:
-        cout << "eliminar prestamo" << endl;
+        switchDelete(deleteLoan(), loan, loan, loan);
+        break;
         default:
         break;
     }
@@ -186,4 +209,45 @@ void calculateLoan(loanStructure &mensualPayment, loanStructure &maxPayment, con
     maxPayment.cuotaTotal = mensualPayment.cuotaMensual * date.plazo;
     cout << "El monto de la cuota mensual es: " << mensualPayment.cuotaMensual << endl;
     cout << "El monto total de la cuota es: " << maxPayment.cuotaTotal << endl;
+}
+
+int deleteLoan()
+{
+    int selection;
+    do
+    {
+        cout << "1. Eliminar monto" << endl;
+        cout << "2. Eliminar intereses" << endl;
+        cout << "3. Eliminar plazo" << endl;
+        cout << "4. Eliminar todo" << endl;
+        cout << "5. Salir" << endl;
+        cin >> selection;
+        if (selection < 1 || selection > 5)
+        {
+            cout << "Seleccione una opción válida";
+        }
+    }while (selection < 1 || selection > 5);
+    return selection;
+}
+
+void switchDelete(int selection, loanStructure &loan, loanStructure &tax, loanStructure &date)
+{
+    switch (selection)
+    {
+        case 1:
+        loan.monto = 0;
+        break;
+        case 2:
+        tax.interes = 0;
+        break;
+        case 3:
+        date.plazo = 0;
+        case 4:
+        loan.monto = 0;
+        tax.interes = 0;
+        date.plazo = 0;
+        break;
+        default:
+        break;
+    }
 }
