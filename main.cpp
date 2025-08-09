@@ -20,7 +20,7 @@ void createLoan(loanStructure &loan);
 void addTax(loanStructure &tax);
 void addDate(loanStructure &date);
 int editLoan();
-void switchLoan(int selection);
+void switchLoan(int selection, loanStructure &loan, loanStructure &tax, loanStructure &date);
 void changeLoan(loanStructure &loan);
 void changeTax(loanStructure &tax);
 void changeDate(loanStructure &date);
@@ -32,7 +32,7 @@ void switchDelete(int selection, loanStructure &loan, loanStructure &tax, loanSt
 int main()
 {
     //Se utiliza setlocale para importar la configuración de la computadora, así se utilizan tildes y ñ
-    setlocale(LC_ALL, "spanish");
+    setlocale(LC_ALL, "");
     loanStructure loan{};
     int option;
     do
@@ -62,6 +62,7 @@ int showMenu()
     return selection;
 }
 
+//Función para llamar todas las demás funciones
 void callFunction(int selection, loanStructure &loan)
 {
     switch (selection)
@@ -72,7 +73,7 @@ void callFunction(int selection, loanStructure &loan)
         addDate(loan);
         break;
         case 2:
-        switchLoan(editLoan());
+        switchLoan(editLoan(), loan, loan, loan);
         break;
         case 3:
         calculateLoan(loan, loan, loan, loan, loan);
@@ -85,6 +86,7 @@ void callFunction(int selection, loanStructure &loan)
     }
 }
 
+//Función para crear un préstamo
 void createLoan(loanStructure &loan)
 {
     do
@@ -99,6 +101,7 @@ void createLoan(loanStructure &loan)
     }while (loan.monto <= 0);
 }
 
+//Función para definir los intereses
 void addTax(loanStructure &tax)
 {
     do
@@ -113,6 +116,7 @@ void addTax(loanStructure &tax)
     }while (tax.interes < 0 || tax.interes > 100);
 }
 
+//Función para definir la fecha
 void addDate(loanStructure &date)
 {
     do
@@ -127,6 +131,7 @@ void addDate(loanStructure &date)
     }while (date.plazo <0 || date.plazo >360);
 }
 
+//Función para editar los distintos valores
 int editLoan()
 {
     int selection;
@@ -145,18 +150,18 @@ int editLoan()
     return selection;
 }
 
-void switchLoan(int selection)
+void switchLoan(int selection, loanStructure &loan, loanStructure &tax, loanStructure &date)
 {
     switch (selection)
     {
         case 1:
-        cout << "editar monto" << endl;
+        changeLoan(loan);
         break;
         case 2:
-        cout << "editar intereses" << endl;
+        changeTax(tax);
         break;
         case 3:
-        cout << "editar plazo" << endl;
+        changeDate(date);
         break;
         default:
         break;
