@@ -28,7 +28,7 @@ void calculateLoan(loanStructure &mensualPayment, loanStructure &maxPayment, con
 int deleteLoan();
 void switchDelete(int selection, loanStructure &loan, loanStructure &tax, loanStructure &date);
 
-//Funcion principal
+//Función principal
 int main()
 {
     //Se utiliza setlocale para importar la configuración de la computadora, así se utilizan tildes y ñ
@@ -108,12 +108,12 @@ void addTax(loanStructure &tax)
     {
         cout << "Introduzca el porcentaje de impuesto, de un rango de 1 al 100" << endl;
         cin >> tax.interes;
-        if (tax.interes < 0 || tax.interes > 100)
+        if (tax.interes < 1 || tax.interes > 100)
         {
             cout << "Introduzca un porcentaje válido, recuerde utilizar solo números" << endl;
             tax.interes = 0;
         }
-    }while (tax.interes < 0 || tax.interes > 100);
+    }while (tax.interes < 1 || tax.interes > 100);
 }
 
 //Función para definir la fecha
@@ -187,11 +187,11 @@ void changeTax(loanStructure &tax)
     {
         cout << "Introduzca el nuevo porcentaje de impuesto de 1 al 100;" << endl;
         cin >> tax.interes;
-        if (tax.interes < 0 || tax.interes > 100)
+        if (tax.interes < 1 || tax.interes > 100)
         {
-            cout << "Introduzca un porcentaje adecuado, recuerde solo usar numeros";
+            cout << "Introduzca un porcentaje adecuado, recuerde solo usar números";
         }
-    }while (tax.interes < 0 || tax.interes > 100);
+    }while (tax.interes < 1 || tax.interes > 100);
 }
 
 void changeDate(loanStructure &date)
@@ -247,6 +247,7 @@ void switchDelete(int selection, loanStructure &loan, loanStructure &tax, loanSt
         break;
         case 3:
         date.plazo = 0;
+        break;
         case 4:
         loan.monto = 0;
         tax.interes = 0;
