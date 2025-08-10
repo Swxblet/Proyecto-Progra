@@ -53,10 +53,11 @@ int showMenu()
         cout << "3. Calcular préstamo" << endl;
         cout << "4. Eliminar préstamo" << endl;
         cout << "5. Salir" << endl;
-        cin >> selection;
-        if (selection < 1 || selection > 5)
+        while (!(cin >> selection) || selection < 1 || selection > 5)
         {
-            cout << "Opción inválida, por favor seleccione una opción de la lista." << endl;
+            cout << "Seleccione una opción válida" << endl;
+            cin.clear();
+            cin.ignore(1000, '\n');
         }
     }while (selection < 1 || selection > 5);
     return selection;
@@ -92,11 +93,11 @@ void createLoan(loanStructure &loan)
     do
     {
         cout << "Introduzca el monto del préstamo" << endl;
-        cin >> loan.monto;
-        if (loan.monto <= 0)
+        while (!(cin >> loan.monto) || loan.monto <= 0)
         {
-            cout << "Introduzca un monto válido, tiene que ser mayor a 0" << endl;
-            loan.monto = 0;
+            cout << "Entrada inválida, introduzca un monto adecuado mayor a 0" << endl;
+            cin.clear();
+            cin.ignore(1000, '\n');
         }
     }while (loan.monto <= 0);
 }
@@ -107,11 +108,11 @@ void addTax(loanStructure &tax)
     do
     {
         cout << "Introduzca el porcentaje de impuesto, de un rango de 1 al 100" << endl;
-        cin >> tax.interes;
-        if (tax.interes < 1 || tax.interes > 100)
+        while (!(cin >> tax.interes) || tax.interes < 1 || tax.interes > 100)
         {
-            cout << "Introduzca un porcentaje válido, recuerde utilizar solo números" << endl;
-            tax.interes = 0;
+            cout << "Entrada inválida, introduzca un valor adecuado" << endl;
+            cin.clear();
+            cin.ignore(1000, '\n');
         }
     }while (tax.interes < 1 || tax.interes > 100);
 }
@@ -122,13 +123,13 @@ void addDate(loanStructure &date)
     do
     {
         cout << "Introduzca el plazo del préstamo en meses, con máximo de 360 meses" << endl;
-        cin >> date.plazo;
-        if (date.plazo <0 || date.plazo >360)
+        while (!(cin >> date.plazo) || date.plazo < 1 || date.plazo > 360)
         {
-            cout << "Introduzca un plazo adecuado" << endl;
-            date.plazo = 0;
+            cout << "Introduzca un plazo adecuado, entre 1 y 360" << endl;
+            cin.clear();
+            cin.ignore(1000, '\n');
         }
-    }while (date.plazo <0 || date.plazo >360);
+    }while (date.plazo <1 || date.plazo >360);
 }
 
 //Función para editar los distintos valores
@@ -141,10 +142,11 @@ int editLoan()
         cout << "2. Editar intereses" << endl;
         cout << "3. Editar plazo" << endl;
         cout << "4. Regresar" << endl;
-        cin >> selection;
-        if (selection <1 || selection > 4)
+        while (!(cin >> selection) || selection < 1 || selection > 4)
         {
-            cout << "Seleccione una opción válida";
+            cout << "Seleccione una opción válida" << endl;
+            cin.clear();
+            cin.ignore(1000, '\n');
         }
     }while (selection < 1 || selection > 4);
     return selection;
@@ -173,10 +175,11 @@ void changeLoan(loanStructure &loan)
     do
     {
         cout << "Introduzca el nuevo monto" << endl;
-        cin >> loan.monto;
-        if (loan.monto <= 0)
+        while (!(cin >> loan.monto) || loan.monto <= 0)
         {
-            cout << "Introduzca un monto adecuado, mayor a 0" << endl;
+            cout << "Entrada inválida, introduzca un monto adecuado mayor a 0" << endl;
+            cin.clear();
+            cin.ignore(1000, '\n');
         }
     }while (loan.monto <= 0);
 }
@@ -186,10 +189,11 @@ void changeTax(loanStructure &tax)
     do
     {
         cout << "Introduzca el nuevo porcentaje de impuesto de 1 al 100;" << endl;
-        cin >> tax.interes;
-        if (tax.interes < 1 || tax.interes > 100)
+        while (!(cin >> tax.interes) || tax.interes < 1 || tax.interes > 100)
         {
-            cout << "Introduzca un porcentaje adecuado, recuerde solo usar números";
+            cout << "Entrada inválida, introduzca un valor adecuado" << endl;
+            cin.clear();
+            cin.ignore(1000, '\n');
         }
     }while (tax.interes < 1 || tax.interes > 100);
 }
@@ -199,18 +203,19 @@ void changeDate(loanStructure &date)
     do
     {
         cout << "Introduzca el nuevo plazo, con máximo de 360" << endl;
-        cin >> date.plazo;
-        if (date.plazo < 1 || date.plazo > 360)
+        while (!(cin >> date.plazo) || date.plazo < 1 || date.plazo > 360)
         {
-            cout << "Introduzca un plazo adecuado" << endl;
+            cout << "Introduzca un plazo adecuado, entre 1 y 360" << endl;
+            cin.clear();
+            cin.ignore(1000, '\n');
         }
     }while (date.plazo < 1 || date.plazo > 360);
 }
 
 void calculateLoan(loanStructure &mensualPayment, loanStructure &maxPayment, const loanStructure &tax, const loanStructure &loan, const loanStructure &date)
 {
-    int monthPayment = tax.interes / 12;
-    mensualPayment.cuotaMensual = (loan.monto * monthPayment) / (1 - (1 + monthPayment) * pow(1 + monthPayment, -date.plazo));
+    double monthRate = (tax.interes / 100.0) / 12;
+    mensualPayment.cuotaMensual = (loan.monto * monthRate) / (1 - pow(1 + monthRate, -date.plazo));
     maxPayment.cuotaTotal = mensualPayment.cuotaMensual * date.plazo;
     cout << "El monto de la cuota mensual es: " << mensualPayment.cuotaMensual << endl;
     cout << "El monto total de la cuota es: " << maxPayment.cuotaTotal << endl;
@@ -226,10 +231,11 @@ int deleteLoan()
         cout << "3. Eliminar plazo" << endl;
         cout << "4. Eliminar todo" << endl;
         cout << "5. Salir" << endl;
-        cin >> selection;
-        if (selection < 1 || selection > 5)
+        while (!(cin >> selection) || selection < 1 || selection > 5)
         {
-            cout << "Seleccione una opción válida";
+            cout << "Seleccione una opción válida" << endl;
+            cin.clear();
+            cin.ignore(1000, '\n');
         }
     }while (selection < 1 || selection > 5);
     return selection;
